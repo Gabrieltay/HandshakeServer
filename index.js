@@ -5,11 +5,11 @@ const hsRoutes = require('./routes/bgpRequest');
 const app = express();
 const aws = require('aws-sdk');
 
-let env = new aws.S3({
+let config = new aws.S3({
 	environment: process.env.NODE_ENV,
 });
 
-console.log(env);
+console.log(process.env.NODE_ENV);
 // Declaring express middleware
 app.use(express.json());
 
