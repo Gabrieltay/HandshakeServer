@@ -1,15 +1,12 @@
 const express = require('express');
+const config = require('config');
 const helmet = require('helmet');
 const debug = require('debug')('app:index');
 const hsRoutes = require('./routes/bgpRequest');
 const app = express();
-const aws = require('aws-sdk');
-
-let config = new aws.S3({
-	environment: process.env.NODE_ENV,
-});
 
 console.log(process.env.NODE_ENV);
+console.log(`${config.get('environment')}`);
 // Declaring express middleware
 app.use(express.json());
 
@@ -24,6 +21,7 @@ app.use('/bgp', hsRoutes);
 
 // Declare default endpoint
 app.get('/', (req, res) => {
+	debug('Welcome to bgphs pseudo API server');
 	res.send({
 		Message: 'Welcome to bgphs pseudo API server',
 	});
