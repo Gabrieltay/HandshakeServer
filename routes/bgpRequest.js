@@ -15,7 +15,7 @@ function generateResponse(statusCode, requestId, dataError) {
 }
 
 router.post('/grantinfo', (req, res) => {
-	debug(req.headers);
+	console.log(req.headers);
 	const valid = definitions.validateGrantInfo(req.body);
 	if (valid) {
 		res.status(200).json(generateResponse(200, req.body.transactionID, null));
