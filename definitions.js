@@ -58,10 +58,20 @@ const grantInfoSchema = {
 		},
 		applicationInfo: { $ref: 'applicationInfo' },
 		applicationContactInfo: { $ref: 'contactInfo' },
-		applicationLocationDeployed: { $ref: 'locationDeployed' },
+		applicationLocationDeployed: {
+			type: ['array', 'null'],
+			items: {
+				$ref: 'locationDeployed',
+			},
+		},
 		claimInfo: { $ref: 'claimInfo' },
 		claimContactInfo: { $ref: 'contactInfo' },
-		claimLocationDeployed: { $ref: 'locationDeployed' },
+		claimLocationDeployed: {
+			type: ['array', 'null'],
+			items: {
+				$ref: 'locationDeployed',
+			},
+		},
 		companyGeneralInfo: { $ref: 'companyGeneralInfo' },
 		projectInfo: { $ref: 'projectInfo' },
 	},
