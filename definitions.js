@@ -221,6 +221,45 @@ const costSchema = {
 	required: ['type', 'vendorName', 'vendorUEN', 'vendorSgRegisteredCheck'],
 };
 
+const updateGrantSchema = {
+	$id: 'bgp/schemas/updateGrant',
+	type: 'object',
+	properties: {
+		transactionID: {
+			pattern: '^[a-zA-Z0-9]{8}-([A-Z0-9]{4}-[A-Z0-9]{4}|[A-Z0-9]{4})$',
+		},
+		transactionTime: { $ref: 'type#/definitions/timestamp' },
+		type: { $ref: 'type#/definitions/str50' },
+		response: {
+			type: 'boolean',
+		},
+		data: {
+			anyOf: [{ $ref: 'updateGrantOfficer' }, { $ref: 'updateGrantStatus' }],
+		},
+	},
+	required: ['transactionID', 'transactionTime', 'type', 'response', 'data'],
+};
+
+const updateGrantOfficerSchema = {
+	$id: 'bgp/schemas/updateGrantOfficer',
+	type: 'object',
+	properties: {
+		role: { $ref: 'type#/definitions/str' },
+		officerID: { $ref: 'type#/definitions/str' },
+		officerName: { $ref: 'type#/definitions/str' },
+	},
+	required: ['role', 'officerID', 'officerName'],
+};
+
+const updateGrantStatusSchema = {
+	$id: 'bgp/schemas/updateGrantStatus',
+	type: 'object',
+	properties: {
+		newGrantStatus: { $ref: 'type#/definitions/str' },
+	},
+	required: ['newGrantStatus'],
+};
+
 const personSchema = {
 	$id: 'tech.gov.sg/molb/schemas/person',
 	type: 'object',
@@ -275,7 +314,7 @@ const baseSchema = {
 	},
 };
 
-exports.validate = ajv
+exports.validateGrantInfo = ajv
 	.addSchema(typeSchema)
 	.addSchema(applicationInfoSchema)
 	.addSchema(contactInfoSchema)
@@ -286,3 +325,8 @@ exports.validate = ajv
 	.addSchema(projectInfoSchema)
 	.addSchema(costSchema)
 	.compile(grantInfoSchema);
+
+exports.validateUpdateGrant = ajv
+	.addSchema(updateGrantStatusSchema)
+	.addSchema(updateGrantOfficerSchema)
+	.compile(updateGrantSchema);

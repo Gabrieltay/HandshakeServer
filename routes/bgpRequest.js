@@ -16,12 +16,23 @@ function generateResponse(statusCode, requestId, dataError) {
 
 router.post('/grantinfo', (req, res) => {
 	debug(req.headers);
-	const valid = definitions.validate(req.body);
+	const valid = definitions.validateGrantInfo(req.body);
 	if (valid) {
 		res.status(200).json(generateResponse(200, req.body.transactionID, null));
 	} else {
 		res.status(400).json(
-			generateResponse(400, req.body.transactionID, ajv.errorsText(definitions.validate.errors))
+			generateResponse(400, req.body.transactionID, ajv.errorsText(definitions.validateGrantInfo.errors))
+		);
+	}
+});
+
+router.post('/grantinfo/:grantid', (req, res) => {
+	const valid = definitions.validateUpdateGrant(req.body);
+	if (valid) {
+		res.status(200).json(generateResponse(200, req.body.transactionID, null));
+	} else {
+		res.status(400).json(
+			generateResponse(400, req.body.transactionID, ajv.errorsText(definitions.validateUpdateGrant.errors))
 		);
 	}
 });
