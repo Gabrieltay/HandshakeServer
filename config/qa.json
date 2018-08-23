@@ -1,0 +1,8 @@
+{
+	"environment": "ci",
+	"response": false,
+	"endpoint": "https://appian-qa.gds-gov.tech/suite/webapi/analytics/riskreport",
+	"proxy": false,
+	"proxyServer": "10.3.11.62",
+	"proxyPort": 3128
+}

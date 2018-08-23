@@ -5,8 +5,7 @@ const debug = require('debug')('app:index');
 const hsRoutes = require('./routes/bgpRequest');
 const app = express();
 
-console.log(process.env.NODE_ENV);
-console.log(`${config.get('environment')}`);
+console.log(`Running in ${config.get('environment')} env`);
 // Declaring express middleware
 app.use(express.json());
 

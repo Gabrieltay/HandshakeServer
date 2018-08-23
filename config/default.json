@@ -1,6 +1,8 @@
 {
 	"environment": "Default",
-	"endpoint": "https://appian-dev.gds-gov.tech/suite/webapi/analytics/riskreport/",
+	"response": true,
+	"endpoint": "https://appian-dev.gds-gov.tech/suite/webapi/analytics/riskreport",
+	"proxy": false,
 	"proxyServer": "10.3.11.62",
 	"proxyPort": 3128
 }

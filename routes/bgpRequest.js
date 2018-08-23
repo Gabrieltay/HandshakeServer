@@ -1,11 +1,11 @@
 const express = require('express');
+const config = require('config');
 const Ajv = require('ajv');
 const debug = require('debug')('app:bgp');
 const definitions = require('../definitions');
+const response = require('../response');
 const router = express.Router();
 var ajv = new Ajv();
-
-const persons = [];
 
 function generateResponse(statusCode, requestId, dataError) {
 	return {
@@ -19,6 +19,7 @@ router.post('/grantinfo', (req, res) => {
 	const valid = definitions.validateGrantInfo(req.body);
 	if (valid) {
 		res.status(200).json(generateResponse(200, req.body.transactionID, null));
+		if (config.get('response')) response.adhocResponse(req.body.transactionID);
 	} else {
 		res.status(400).json(
 			generateResponse(400, req.body.transactionID, ajv.errorsText(definitions.validateGrantInfo.errors))
