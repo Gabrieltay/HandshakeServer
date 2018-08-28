@@ -35,7 +35,7 @@ exports.createJWTToken = function(data) {
 		grant_type: data.grant_type,
 		access: 'basic',
 	};
-	console.log(data.username);
+
 	let token = jwt.sign(
 		{
 			data: user,
