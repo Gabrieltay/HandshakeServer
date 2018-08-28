@@ -305,6 +305,44 @@ const detailedRiskReportSchema = {
 	},
 };
 
+const updateBlacklistWatchlistSchema = {
+	$id: 'bgp/schemas/updateBlacklistWatchlist',
+	type: 'object',
+	properties: {
+		transactionID: {
+			pattern: '^[a-zA-Z0-9]{8}-([A-Z0-9]{4}-[A-Z0-9]{4}|[A-Z0-9]{4})$',
+		},
+		transactionTime: { $ref: 'type#/definitions/timestamp' },
+		response: {
+			type: 'boolean',
+		},
+		data: {
+			type: ['array', 'null'],
+			items: {
+				$ref: 'blacklistWatchlist',
+			},
+		},
+	},
+	required: ['transactionID', 'transactionTime', 'response', 'data'],
+};
+
+const blacklistWatchlistSchema = {
+	$id: 'bgp/schemas/blacklistWatchlist',
+	type: 'object',
+	properties: {
+		name: { $ref: 'type#/definitions/str100' },
+		type: { $ref: 'type#/definitions/str20' },
+		id: { $ref: 'type#/definitions/str20' },
+		certificationNumber: { $ref: 'type#/definitions/str20' },
+		blacklisted: { $ref: 'type#/definitions/int' },
+		watchlisted: { $ref: 'type#/definitions/int' },
+		operation: { $ref: 'type#/definitions/int' },
+	},
+	required: ['id', 'operation', 'blacklisted', 'watchlisted'],
+	if: { properties: { operation: { maximum: 0 } } },
+	then: { required: ['name', 'type'] },
+};
+
 ajv.addSchema(typeSchema)
 	.addSchema(applicationInfoSchema)
 	.addSchema(contactInfoSchema)
@@ -315,7 +353,8 @@ ajv.addSchema(typeSchema)
 	.addSchema(projectInfoSchema)
 	.addSchema(costSchema)
 	.addSchema(updateGrantStatusSchema)
-	.addSchema(updateGrantOfficerSchema);
+	.addSchema(updateGrantOfficerSchema)
+	.addSchema(blacklistWatchlistSchema);
 
 exports.validateGrantInfo = ajv.compile(grantInfoSchema);
 
@@ -324,3 +363,5 @@ exports.validateUpdateGrant = ajv.compile(updateGrantSchema);
 exports.validateAdhocRiskreport = ajv.compile(adhocRiskReportSchema);
 
 exports.validateDetailedRiskreport = ajv.compile(detailedRiskReportSchema);
+
+exports.validateUpdateBlacklistWatchlist = ajv.compile(updateBlacklistWatchlistSchema);

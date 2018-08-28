@@ -3,6 +3,7 @@ const config = require('config');
 const helmet = require('helmet');
 const debug = require('debug')('app:index');
 const hsRoutes = require('./routes/bgpRequest');
+const auth = require('./middleware/auth');
 const app = express();
 
 console.log(`Running in ${config.get('environment')} env`);
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(helmet());
 
 // Using customised middleware
+app.use(auth.verifyJWT);
 //app.use(httpLogger.morgan);
 
 // Assign routes to express Application

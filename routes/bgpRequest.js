@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('config');
 const Ajv = require('ajv');
+const jwt = require('jsonwebtoken');
 const debug = require('debug')('app:bgp');
 const definitions = require('../definitions');
 const response = require('../response');
@@ -15,7 +16,6 @@ function generateResponse(statusCode, requestId, dataError) {
 }
 
 router.post('/grantinfo', (req, res) => {
-	console.log(req.headers);
 	const valid = definitions.validateGrantInfo(req.body);
 	if (valid) {
 		res.status(200).json(generateResponse(200, req.body.transactionID, null));
@@ -60,6 +60,19 @@ router.post('/riskreport/detailed', (req, res) => {
 	}
 });
 
-router.post('/watchblacklist', (req, res) => {});
+router.post('/watchblacklist', (req, res) => {
+	const valid = definitions.validateUpdateBlacklistWatchlist(req.body);
+	if (valid) {
+		res.status(200).json(generateResponse(200, req.body.transactionID, null));
+	} else {
+		res.status(400).json(
+			generateResponse(
+				400,
+				req.body.transactionID,
+				ajv.errorsText(definitions.validateUpdateBlacklistWatchlist.errors)
+			)
+		);
+	}
+});
 
 module.exports = router;
