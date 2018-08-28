@@ -270,62 +270,42 @@ const updateGrantStatusSchema = {
 	required: ['newGrantStatus'],
 };
 
-const personSchema = {
-	$id: 'tech.gov.sg/molb/schemas/person',
+const adhocRiskReportSchema = {
+	$id: 'bgp/schemas/adhocRiskReport',
 	type: 'object',
 	properties: {
-		name: { $ref: 'base#/definitions/str' },
-		email: { format: 'email' },
-		nric: { $ref: 'common#/definitions/nric' },
-		address: {
-			$ref: 'address',
+		transactionID: {
+			pattern: '^[a-zA-Z0-9]{8}-([A-Z0-9]{4}-[A-Z0-9]{4}|[A-Z0-9]{4})$',
 		},
-		siblings: {
-			type: ['array', 'null'],
-			items: {
-				$ref: 'sibling',
-			},
+		transactionTime: { $ref: 'type#/definitions/timestamp' },
+		applicationID: {
+			pattern: '[a-zA-Z0-9]{8}',
+		},
+		response: {
+			type: 'boolean',
 		},
 	},
-	required: ['name', 'nric'],
 };
 
-//const addressSchema = {
-//	$id: 'tech.gov.sg/molb/schemas/address',
-//	type: 'object',
-//	properties: {
-//		street: { $ref: 'base#/definitions/str' },
-//		unit: { $ref: 'base#/definitions/str' },
-//		postal: { type: 'integer', minimum: 100000, maximum: 999999 },
-//	},
-//};
-
-const siblingSchema = {
-	$id: 'tech.gov.sg/molb/schemas/sibling',
+const detailedRiskReportSchema = {
+	$id: 'bgp/schemas/detailedRiskReport',
 	type: 'object',
 	properties: {
-		name: { $ref: 'base#/definitions/str' },
-		nric: { $ref: 'common#/definitions/nric' },
+		transactionID: {
+			pattern: '^[a-zA-Z0-9]{8}-([A-Z0-9]{4}-[A-Z0-9]{4}|[A-Z0-9]{4})$',
+		},
+		transactionTime: { $ref: 'type#/definitions/timestamp' },
+		startDate: { $ref: 'type#/definitions/str8' },
+		endDate: { $ref: 'type#/definitions/str8' },
+		type: { $ref: 'type#/definitions/int' },
+		grant: { $ref: 'type#/definitions/str20' },
+		response: {
+			type: 'boolean',
+		},
 	},
 };
 
-const commonSchema = {
-	$id: 'tech.gov.sg/molb/schemas/common',
-	definitions: {
-		nric: { pattern: '^S[0-9]{7}[a-zA-Z]$' },
-	},
-};
-
-const baseSchema = {
-	$id: 'tech.gov.sg/molb/schemas/base',
-	definitions: {
-		int: { type: 'integer' },
-		str: { type: 'string' },
-	},
-};
-
-exports.validateGrantInfo = ajv
-	.addSchema(typeSchema)
+ajv.addSchema(typeSchema)
 	.addSchema(applicationInfoSchema)
 	.addSchema(contactInfoSchema)
 	.addSchema(addressSchema)
@@ -334,9 +314,13 @@ exports.validateGrantInfo = ajv
 	.addSchema(companyGeneralInfoSchema)
 	.addSchema(projectInfoSchema)
 	.addSchema(costSchema)
-	.compile(grantInfoSchema);
-
-exports.validateUpdateGrant = ajv
 	.addSchema(updateGrantStatusSchema)
-	.addSchema(updateGrantOfficerSchema)
-	.compile(updateGrantSchema);
+	.addSchema(updateGrantOfficerSchema);
+
+exports.validateGrantInfo = ajv.compile(grantInfoSchema);
+
+exports.validateUpdateGrant = ajv.compile(updateGrantSchema);
+
+exports.validateAdhocRiskreport = ajv.compile(adhocRiskReportSchema);
+
+exports.validateDetailedRiskreport = ajv.compile(detailedRiskReportSchema);
