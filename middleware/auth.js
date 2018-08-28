@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const _ = require('underscore');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Hello World';
 const JWT_EXPIRY = process.env.JWT_EXPIRY || 3600;
@@ -15,6 +16,8 @@ function verifyJWTToken(token) {
 }
 
 exports.verifyJWT = function(req, res, next) {
+	if (_.contains(['/api/Token'], req.path)) return next();
+
 	token = req.headers.authorization ? req.headers.authorization.split(/\s+/)[1] : null;
 
 	verifyJWTToken(token)
