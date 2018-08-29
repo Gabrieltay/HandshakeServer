@@ -18,7 +18,7 @@ function generateResponse(statusCode, requestId, dataError) {
 router.post('/grantinfo', (req, res) => {
 	const valid = definitions.validateGrantInfo(req.body);
 	if (valid) {
-		res.status(200).json(generateResponse(200, req.body.transactionID, null));
+		res.status(200).send(generateResponse(200, req.body.transactionID, null));
 		if (config.get('response')) response.adhocResponse(req.body.transactionID);
 	} else {
 		res.status(400).json(
@@ -30,7 +30,7 @@ router.post('/grantinfo', (req, res) => {
 router.post('/grantinfo/:grantid', (req, res) => {
 	const valid = definitions.validateUpdateGrant(req.body);
 	if (valid) {
-		res.status(200).json(generateResponse(200, req.body.transactionID, null));
+		res.status(200).send(generateResponse(200, req.body.transactionID, null));
 	} else {
 		res.status(400).json(
 			generateResponse(400, req.body.transactionID, ajv.errorsText(definitions.validateUpdateGrant.errors))
