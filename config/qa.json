@@ -1,5 +1,5 @@
 {
-	"environment": "ci",
+	"environment": "qa",
 	"response": false,
 	"endpoint": "https://appian-qa.gds-gov.tech/suite/webapi/analytics/riskreport",
 	"proxy": false,
