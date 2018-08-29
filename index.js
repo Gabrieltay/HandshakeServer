@@ -16,8 +16,10 @@ app.use(express.urlencoded());
 app.use(helmet());
 
 // Using customised middleware
-app.use(auth.verifyJWT);
 //app.use(httpLogger.morgan);
+
+// Skip JWT Verification
+//app.use(auth.verifyJWT);
 
 // Assign routes to express BGP requests
 app.use('/bgp', hsRoutes);
