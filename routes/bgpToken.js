@@ -15,7 +15,7 @@ router.post('/Token', (req, res) => {
 	res.status(200).json({
 		access_token: auth.createJWTToken(req.body),
 		token_type: 'bearer',
-		expires_in: 3600,
+		expires_in: auth.JWT_EXPIRY,
 		timestamp: getCurrentTimestamp(),
 	});
 });

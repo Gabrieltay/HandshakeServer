@@ -51,3 +51,5 @@ exports.createJWTToken = function(data) {
 	);
 	return token;
 };
+
+exports.JWT_EXPIRY = JWT_EXPIRY;
