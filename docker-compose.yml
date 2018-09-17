@@ -1,0 +1,20 @@
+version: "3"
+services:
+  node:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: nodetut
+    container_name: handshakeStub
+    environment: 
+      - NODE_ENV=development
+      - DEBUG=app:*
+      - JWT_SECRET=4WyAwuBrzn
+      - JWT_EXPIRY=3600
+    ports:
+      - "8080:8080" 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
